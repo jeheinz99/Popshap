@@ -4,5 +4,4 @@ import App from './App.jsx';
 
 const root = createRoot(document.getElementById('contents'));
 
-
 root.render(<App/>);

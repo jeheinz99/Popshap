@@ -37,6 +37,7 @@ html, body {
 .Leaderboard-and-slide {
   width: 100%;
   display: grid;
+  height: 668px;
   grid-template-columns: 400px 880px;
 }
 .Leaderboard-outer-box {
@@ -105,13 +106,29 @@ html, body {
 #bg-1 {
   background: #447EB1;
 }
-
-.slide-list {
-  overflow: hidden;
-  width: 880px;
-  height: 698px;
+.current {
+  height: 650px;
 }
-.slide-media {
+.media {
+  height: 670px;
+  width: 100%;
+}
+.slider {
+  position: relative;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: all 0.5s ease;
+}
+.current {
+  opacity: 1;
+  transform: translateX(0);
+  display: flex;
+  align-items: flex-start;
 }
 
 @media only screen and (max-width: 1280px) {

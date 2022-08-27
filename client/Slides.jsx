@@ -1,41 +1,54 @@
-import React, { useState, useRef, useEffect } from 'react';
-import slide1 from './assets/slide1.mp4';
-import slide2 from './assets/slide2.jpg';
+import React, { useState, useEffect } from 'react';
+import slides from './slides-data';
 
 const Slides = () => {
 
-  const [index, setIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  const autoScroll = true;
+  let slideInterval;
 
-  const slides = [
-    {
-      type: 'video',
-      data: slide1,
-      duration: 0,
-    },
-    {
-      type: 'image',
-      data: slide2,
-      duration: 0,
-    },
-  ];
+  // initialize functions to update the current slide to the next slide or previous in the array
+  const nextSlide = () => {
+    (currentSlide === slides.length - 1 ? setCurrentSlide(0) : setCurrentSlide(currentSlide + 1));
+  };
+  const prevSlide = () => {
+    (currentSlide === 0 ? setCurrentSlide(slides.length - 1) : setCurrentSlide(currentSlide - 1));
+  };
 
-  const slidesArr = [];
-  for (let i = 0; i < slides.length; i++) {
-    if (slides[i].type === 'video') {
-      slidesArr.push(<video className="slide-media" key={`video-${i}`} id={i} src={slides[i].data} style={{ transform: `translate3d(${-index * 100}%, 0, 0)`}}/>);
+  // initialize an auto scroll function that will set the current interval based on the current slide's duration property
+  const auto = () => {
+    slideInterval = setInterval(nextSlide, slides[currentSlide].duration);
+  };
+
+  // effect to run on component mount that will reset the slide interval whenever the currentslide changes
+  // also used to toggle auto scroll if not needed by setting autoScroll to false
+  useEffect(() => {
+    if (autoScroll) {
+      auto();
     }
-    else slidesArr.push(<img className="slide-media" key={`image-${i}`} id={i} src={slides[i].data} style={{ transform: `translate3d(${-index * 100}%, 0, 0)`}}/>);
-  }
+    return () => clearInterval(slideInterval);
+  }, [currentSlide]);
 
   return (
-    <div className="slide-list">
-      <div className="slide-slider">
-        {slidesArr}
-      </div>
+    <div className="slider">
+      {slides.map((slide, index) => {
+        return (
+          <div className={index === currentSlide ? "slide current" : "slide"} key={`slide-${index}`}>
+            {index === currentSlide && (
+              <div>
+              {console.log(slide, 'slide')}
+                {slide.type === "image" && <img src={slide.data} alt="slide" className="media"/>}
+                {slide.type === "video" && <video controls width="100%" loop autoPlay muted>
+                  <source src={slide.data} type="video/mp4" alt="slide" className="media"/>
+                </video>}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 export default Slides;
-
-// style={{ transform: `translate3d(${-index * 100}%, 0, 0)`}}

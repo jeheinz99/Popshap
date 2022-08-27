@@ -52,7 +52,7 @@ const Leaderboard = () => {
     return data.sort((a, b) => b.points - a.points);
   };
   const leaderboardData = sortData(data);
-  // iterate through sorted data and create new component for each
+  // iterate through sorted data and create new leaderboard box component with each index's data
   const leaderboardBoxes = [];
   for (let i = 0; i < leaderboardData.length; i++) {
     leaderboardBoxes.push(<LeaderboardBox key={`leaderboard-box-${i}`} bg={`bg-${(i+1)%2}`} placement={i+1} name={leaderboardData[i].name} points={leaderboardData[i].points}/>)
